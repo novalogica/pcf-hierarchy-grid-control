@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { CellRendererProps, CellRendererOverrides, RECID, GetRendererParams } from "../types";
 import { Button } from "@fluentui/react-components";
 import { OrganizationRegular } from "@fluentui/react-icons";
@@ -7,30 +7,25 @@ import { IInputs } from "../generated/ManifestTypes";
 import { EntityMetada } from "../interfaces/entity";
 import { UseDataverse } from "../hooks/useDataverse";
 
-export const cellRendererOverrides = (
-	context: ComponentFramework.Context<IInputs>, 
-	entityName: string, 
-	metadata: EntityMetada
-  ): CellRendererOverrides => {
-		return {
-			["Text"]: (props: CellRendererProps, col) => {
-				return <CellRenderer context={context} entityName={entityName} metadata={metadata} props={props} col={col} />;
-			}
-		};
-  };
+export const cellRendererOverrides = (context: ComponentFramework.Context<IInputs>, entityName: string, metadata: EntityMetada): CellRendererOverrides => {
+	return {
+		["Text"]: (props: CellRendererProps, col) => {
+			return <CellRenderer context={context} entityName={entityName} metadata={metadata} props={props} col={col} />;
+		}
+	};
+};
   
-  const CellRenderer: React.FC<{
+interface IProps {
 	context: ComponentFramework.Context<IInputs>;
 	entityName: string;
 	metadata: EntityMetada;
 	props: CellRendererProps;
 	col: GetRendererParams;
-  }> = ({ context, entityName, metadata, props, col }) => {
-  
-	const { checkIfHasHierarchy } = UseDataverse(context, entityName, metadata);
-	
-	const primaryColumn = useMemo(() => metadata._entityDescriptor.PrimaryNameAttribute, [metadata]);
+}
 
+const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps) => {
+	const { checkIfHasHierarchy } = UseDataverse(context, entityName, metadata);
+	const primaryColumn = useMemo(() => metadata._entityDescriptor.PrimaryNameAttribute, [metadata]);
 	const [hasHierarchy, setHasHierarchy] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -47,7 +42,7 @@ export const cellRendererOverrides = (
 	const onHierarchyClicked = () => {
 		const paneInput = {
 			pageType: "control",
-			controlName: "nl_novalogica.HierarchyControl",
+			controlName: "nl_novalogica.HierarchyPCFControl",
 			data: { etn: entityName, id: col.rowData?.[RECID] }
 		};
 
@@ -88,5 +83,7 @@ export const cellRendererOverrides = (
 			}
 		</div>
 	);
-};
-  
+});
+
+CellRenderer.displayName = "CellRenderer"
+export default CellRenderer; 

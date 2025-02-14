@@ -10,10 +10,8 @@ export const UseDataverse = (context: ComponentFramework.Context<IInputs>, entit
 
       const referencingAttr = `_${relationship.ReferencingAttribute}_value`;
       const columns = [metadata._entityDescriptor.PrimaryNameAttribute, referencingAttr].join(",")
-      const parentRecord = await fetchParent(relationship, columns, id);
-      const childrenRecords = await fetchChildren(relationship, columns, id);
-
-      const hasHierarchy = (parentRecord[referencingAttr] != null || (Array.isArray(childrenRecords) && childrenRecords.length > 0));
+      const data = (await fetchHierarchy(relationship, columns, id)).filter((r) => (r[relationship.ReferencedAttribute] as string) !== id);
+      const hasHierarchy = (Array.isArray(data) && data.length > 0);
       return hasHierarchy;
   };
 
@@ -25,18 +23,10 @@ export const UseDataverse = (context: ComponentFramework.Context<IInputs>, entit
     return hierarchicalRelationship ?? null;
   };
 
-  const fetchParent = async (relationship: RelationshipInfo, columns: string, id: string): Promise<ComponentFramework.WebApi.Entity> => {
-    const query = `?$select=${columns}&$expand=${relationship.ReferencingAttribute}($select=${relationship.ReferencedAttribute})`;
-    return await context.webAPI.retrieveRecord(entityName, id, query);
-  };
+  const fetchHierarchy = async (relationship: RelationshipInfo, columns: string, id: string): Promise<ComponentFramework.WebApi.Entity[]> => {
+    const query = `?$filter=(Microsoft.Dynamics.CRM.Above(PropertyName='${relationship.ReferencedAttribute}',PropertyValue='${id}') or Microsoft.Dynamics.CRM.UnderOrEqual(PropertyName='${relationship.ReferencedAttribute}',PropertyValue='${id}'))&$select=${columns}`
+    return (await context.webAPI.retrieveMultipleRecords(entityName, query)).entities;
 
-  const fetchChildren = async (relationship: RelationshipInfo, columns: string, parentId: string,): Promise<ComponentFramework.WebApi.Entity[] | null> => {
-    if (!parentId)
-      return null;
-
-    const query = `?$select=${columns}&$filter=_${relationship.ReferencingAttribute}_value eq ${parentId}`;
-    const result = await context.webAPI.retrieveMultipleRecords(entityName, query);
-    return result.entities;
   };
 
   return { checkIfHasHierarchy };

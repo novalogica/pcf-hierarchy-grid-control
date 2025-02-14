@@ -4,7 +4,7 @@
     namespace="novalogica" 
     constructor="PAHierarchyGrid" 
     version="1.0.0" 
-    display-name-key="Hierarchy Grid"
+    display-name-key="Hierarchy Grid Indicator"
     control-type="virtual" 
   >
     <property name="EventName" display-name-key="EventName" description-key="EventName" of-type="SingleLine.Text" usage="bound" required="true" />
