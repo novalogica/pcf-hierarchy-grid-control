@@ -43,7 +43,8 @@ const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps
 		const paneInput = {
 			pageType: "control",
 			controlName: "nl_novalogica.HierarchyPCFControl",
-			data: { etn: entityName, id: col.rowData?.[RECID] }
+			data: { etn: entityName, id: col.rowData?.[RECID] },
+			title: `Hierarchy for ${entityName}`
 		};
 
 		const navigationOptions = {
