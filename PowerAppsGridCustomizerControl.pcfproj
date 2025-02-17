@@ -11,6 +11,7 @@
     <Name>PowerAppsGridCustomizerControl</Name>
     <ProjectGuid>82cab210-4e37-471b-8150-43d377102d13</ProjectGuid>
     <OutputPath>$(MSBuildThisFileDirectory)out\controls</OutputPath>
+    <PcfBuildMode>production</PcfBuildMode>
   </PropertyGroup>
 
   <PropertyGroup>
