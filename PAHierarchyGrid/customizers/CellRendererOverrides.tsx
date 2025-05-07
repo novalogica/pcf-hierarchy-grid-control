@@ -63,8 +63,15 @@ const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps
 			<div style={{ display: 'flex', flexDirection: 'row', gap: 16, height: '100%', alignItems: 'center', paddingLeft: 8 }}>
 				{
 					hasHierarchy ? 
-						<Button style={{ color: 'rgb(17, 94, 163)'}} icon={<OrganizationRegular />} onClick={onHierarchyClicked} appearance="transparent" /> 
-						: <div id="empty_block" style={{ height: 32, width: 32 }} />
+						<Button 
+							style={{ color: 'rgb(17, 94, 163)'}} 
+							icon={<OrganizationRegular />} 
+							onClick={onHierarchyClicked} 
+							appearance="transparent" /> 
+						: <Button 
+							style={{ color: 'transparent', cursor: 'default' }} 
+							icon={<OrganizationRegular />} 
+							appearance="transparent" /> 
 				}
 				<div>
 					{
@@ -77,7 +84,7 @@ const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps
 	}
 
 	return (
-		<div>
+		<div style={{display: 'flex', flexDirection: 'row',  height: '100%', alignItems: 'center', paddingLeft: 8 }} >
 			{
 				// eslint-disable-next-line react/prop-types
 				props.formattedValue ?? ""
