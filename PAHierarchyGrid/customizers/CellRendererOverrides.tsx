@@ -58,6 +58,14 @@ const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps
 		Xrm.Navigation.navigateTo(paneInput, navigationOptions);
 	};
 
+	const onRecordTitleClicked = () => {
+		void context.navigation.openForm({
+			entityName: entityName,
+			entityId: col.rowData?.[RECID],
+			openInNewWindow: false
+		});
+	};
+
 	if (col.colDefs[col.columnIndex].name === primaryColumn) {
 		return (
 			<div style={{ display: 'flex', flexDirection: 'row', gap: 16, height: '100%', alignItems: 'center', paddingLeft: 8 }}>
@@ -73,22 +81,26 @@ const CellRenderer = memo(({ context, entityName, metadata, props, col }: IProps
 							icon={<OrganizationRegular />} 
 							appearance="transparent" /> 
 				}
-				<div>
-					{
-						// eslint-disable-next-line react/prop-types
-						props.formattedValue ?? ""
-					}
+				<div onClick={onRecordTitleClicked}>
+					<span className="clickable-title">
+						{
+							// eslint-disable-next-line react/prop-types
+							props.formattedValue ?? ""
+						}
+					</span>
 				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div style={{display: 'flex', flexDirection: 'row',  height: '100%', alignItems: 'center', paddingLeft: 8 }} >
-			{
-				// eslint-disable-next-line react/prop-types
-				props.formattedValue ?? ""
-			}
+		<div onClick={onRecordTitleClicked}>
+			<span className="clickable-title">
+				{
+					// eslint-disable-next-line react/prop-types
+					props.formattedValue ?? ""
+				}
+			</span>
 		</div>
 	);
 });

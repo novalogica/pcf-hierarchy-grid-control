@@ -1,0 +1,9 @@
+.clickable-title {
+  cursor: pointer;
+  color: rgb(17, 94, 163);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.clickable-title:hover {
+  text-decoration: underline !important;
+}

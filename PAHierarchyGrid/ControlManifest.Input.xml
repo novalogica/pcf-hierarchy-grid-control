@@ -3,13 +3,14 @@
   <control 
     namespace="novalogica" 
     constructor="PAHierarchyGrid" 
-    version="1.0.1" 
+    version="1.0.2" 
     display-name-key="Hierarchy Grid Indicator"
     control-type="virtual" 
   >
     <property name="EventName" display-name-key="EventName" description-key="EventName" of-type="SingleLine.Text" usage="bound" required="true" />
     <resources>
       <code path="index.ts" order="1"/>
+      <css path="styles/index.css" order="1" />
       <platform-library name="React" version="16.14.0" />
       <platform-library name="Fluent" version="9.46.2" />
     </resources>
