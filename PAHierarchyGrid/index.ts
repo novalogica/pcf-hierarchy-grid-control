@@ -12,23 +12,22 @@ export class PAHierarchyGrid implements ComponentFramework.ReactControl<IInputs,
 
 	public init(
 		context: ComponentFramework.Context<IInputs>,
-		notifyOutputChanged: () => void,
-		state: ComponentFramework.Dictionary
+		_notifyOutputChanged: () => void,
+		_state: ComponentFramework.Dictionary
 	): void {
 		const eventName = context.parameters.EventName.raw;
 
 		if (!eventName)
 			return;
 
-		//@ts-expect-error - contextInfo is not recognized
-		const entityLogicalName: string | undefined = context?.mode.contextInfo.entityTypeName;
+		const entityLogicalName: string | undefined = (context.mode as any).contextInfo.entityTypeName;
 
 		if(entityLogicalName) {
 			context.utils.getEntityMetadata(entityLogicalName)
 				.then((metadata) => {
 					const gridCustomizer: PAOneGridCustomizer = { 
-					cellRendererOverrides: cellRendererOverrides(context, entityLogicalName, metadata as EntityMetada), 
-					cellEditorOverrides 
+						cellRendererOverrides: cellRendererOverrides(context, entityLogicalName, metadata as EntityMetada), 
+						cellEditorOverrides 
 					};
 
 					(context as any).factory.fireEvent(eventName, gridCustomizer);

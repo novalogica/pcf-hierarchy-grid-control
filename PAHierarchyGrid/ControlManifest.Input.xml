@@ -3,7 +3,7 @@
   <control 
     namespace="novalogica" 
     constructor="PAHierarchyGrid" 
-    version="1.0.2" 
+    version="1.0.6" 
     display-name-key="Hierarchy Grid Indicator"
     control-type="virtual" 
   >
