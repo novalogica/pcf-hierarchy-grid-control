@@ -55,7 +55,6 @@ const CellRenderer = memo(
 
       void fetchHierarchy(col.rowData?.[RECID])
         .then((result) => {
-          console.log((col.rowData as any).name);
           setHasHierarchy(result);
         })
         .catch(() => setHasHierarchy(false));
